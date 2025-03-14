@@ -7,7 +7,7 @@ clear_screen() {
 }
 
 pokemon_header(){
-    echo -e "\033[1;34m                                                                                                                
+    echo -e "\033[1;33m                                                                                                                
                                                          █▒                                              
                                                        ▓▓▒▒▓                                             
                                                      ▒▓▓░░░░▓░                                           
