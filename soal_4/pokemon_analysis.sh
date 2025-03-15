@@ -165,26 +165,27 @@ case "$1" in
             echo -e "\033[1;31mError: Missing search term\033[0m";
             echo -e "\033[1;32mPlease enter a search term \033[0m";
             exit 1; }
-            SEARCH_TERM=$(echo "$2" | tr '[:upper:]' '[:lower:]')
-            HEADER=$(head -1 "$CSV_FILE")
-            
-            RESULTS=$(awk -F, -v term="$SEARCH_TERM" '
-            NR == 1 { next }
-            index(tolower($1), term) > 0 {
-                gsub(/%/, "", $2)
-                printf "%s,%.5f%%,%d,%s,%s,%d,%d,%d,%d,%d,%d\n", 
-                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
-            }' "$CSV_FILE" | sort -t, -k2,2nr)
-            if [ -z "$RESULTS" ]; then
-                
-                echo -e "\033[1;31mError: No entries found for name '$2'\033[0m"
-                exit 1
-            else
-                echo -en "\033[1;32mThis is Pokemon name that contains the word : '$2' \033[0m\n";
-                echo -e "\033[1m$HEADER\033[0m"
-                echo "$RESULTS"
-            fi
 
+        shift
+        SEARCH_TERM=$(echo "$*" | tr '[:upper:]' '[:lower:]' | xargs)
+        HEADER=$(head -1 "$CSV_FILE")
+        
+        RESULTS=$(awk -F, -v term="$SEARCH_TERM" '
+        NR == 1 { next }
+        tolower($1) == term {
+            gsub(/%/, "", $2)
+            printf "%s,%.5f%%,%d,%s,%s,%d,%d,%d,%d,%d,%d\n", 
+            $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
+        }' "$CSV_FILE")
+        
+        if [ -z "$RESULTS" ]; then
+            echo -e "\033[1;31mError: No entries found for name '$SEARCH_TERM'\033[0m"
+            exit 1
+        else
+            echo -en "\033[1;32mFound exact match for Pokemon: '$SEARCH_TERM' \033[0m\n"
+            echo -e "\033[1m$HEADER\033[0m"
+            echo "$RESULTS"
+        fi
     ;;
 
     -f | --filter)
