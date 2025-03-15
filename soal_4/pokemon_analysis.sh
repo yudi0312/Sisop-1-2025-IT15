@@ -105,7 +105,6 @@ case "$1" in
 
     -s | --sort)
         clear_screen
-        echo -e "\033[1;32mSORT BY '$2'\033[0m";
         [ -z "$2" ] && { 
             echo -e "\033[1;31mError: Missing sort criteria \033[0m"; 
             echo -e "\033[1;32mPlease add one [CRITERIA] of the following options :  \033[0m";
@@ -123,12 +122,14 @@ case "$1" in
         HEADER=$(head -1 "$CSV_FILE")
         case "$CRITERIA" in
             usage)
+                echo -e "\033[1;32mSORT BY '$2'\033[0m";
                 echo -e "\033[1m$HEADER\033[0m"
                 awk -F, 'NR > 1 {             
                     print $2 "," $0
                 }' "$CSV_FILE" | sort -t, -k1,1nr | cut -d, -f2-
                 ;;
             raw|hp|atk|def|spatk|spdef|speed)
+                echo -e "\033[1;32mSORT BY '$2'\033[0m";
                 COL_NUM=$(awk -F, -v f="$CRITERIA" 'NR==1 {
                     cols["raw"]=3; cols["hp"]=6; cols["atk"]=7
                     cols["def"]=8; cols["spatk"]=9; cols["spdef"]=10; cols["speed"]=11
@@ -137,68 +138,89 @@ case "$1" in
                 awk 'NR > 1' "$CSV_FILE" | sort -t, -k$COL_NUM,$COL_NUM -nr
                 ;;
             name)
+                echo -e "\033[1;32mSORT BY '$2'\033[0m";
                 echo -e "\033[1m$HEADER\033[0m"
                 awk 'NR > 1' "$CSV_FILE" | sort -t, -k1,1
                 ;;
             *) 
-                echo -e "\033[1;31mError: Invalid criteria '$CRITERIA'\033[0m"
+                echo -e "\033[1;31mError: Missing sort criteria \033[0m"; 
+                echo -e "\033[1;32mPlease add one [CRITERIA] of the following options :  \033[0m";
+                echo -e "\033[1;32m- usage\033[0m";
+                echo -e "\033[1;32m- raw\033[0m";
+                echo -e "\033[1;32m- hp\033[0m";
+                echo -e "\033[1;32m- atk\033[0m";
+                echo -e "\033[1;32m- def\033[0m";
+                echo -e "\033[1;32m- spatk\033[0m";
+                echo -e "\033[1;32m- spdef\033[0m";
+                echo -e "\033[1;32m- speed\033[0m";
+                echo -e "\033[1;32m- name\033[0m";
                 exit 1
                 ;;
         esac
         ;;
 
     -g | --grep)
-    clear_screen
-    echo -en "\033[1;32mThis is Pokemon name that contains the word : '$2' \033[0m\n";
-    [ -z "$2" ] && { 
-        echo -e "\033[1;31mError: Missing search term\033[0m";
-        echo -e "\033[1;32mPlease enter a search term \033[0m";
-        exit 1; }
-        SEARCH_TERM=$(echo "$2" | tr '[:upper:]' '[:lower:]')
-        HEADER=$(head -1 "$CSV_FILE")
-        
-        RESULTS=$(awk -F, -v term="$SEARCH_TERM" '
-        NR == 1 { next }
-        index(tolower($1), term) > 0 {
-            gsub(/%/, "", $2)
-            printf "%s,%.5f%%,%d,%s,%s,%d,%d,%d,%d,%d,%d\n", 
-            $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
-        }' "$CSV_FILE" | sort -t, -k2,2nr)
-        if [ -z "$RESULTS" ]; then
+        clear_screen
+        [ -z "$2" ] && { 
+            echo -e "\033[1;31mError: Missing search term\033[0m";
+            echo -e "\033[1;32mPlease enter a search term \033[0m";
+            exit 1; }
+            SEARCH_TERM=$(echo "$2" | tr '[:upper:]' '[:lower:]')
+            HEADER=$(head -1 "$CSV_FILE")
             
-            echo -e "\033[1;31mError: No entries found for name '$2'\033[0m"
-            exit 1
-        else
-            echo -e "\033[1m$HEADER\033[0m"
-            echo "$RESULTS"
-        fi
+            RESULTS=$(awk -F, -v term="$SEARCH_TERM" '
+            NR == 1 { next }
+            index(tolower($1), term) > 0 {
+                gsub(/%/, "", $2)
+                printf "%s,%.5f%%,%d,%s,%s,%d,%d,%d,%d,%d,%d\n", 
+                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
+            }' "$CSV_FILE" | sort -t, -k2,2nr)
+            if [ -z "$RESULTS" ]; then
+                
+                echo -e "\033[1;31mError: No entries found for name '$2'\033[0m"
+                exit 1
+            else
+                echo -en "\033[1;32mThis is Pokemon name that contains the word : '$2' \033[0m\n";
+                echo -e "\033[1m$HEADER\033[0m"
+                echo "$RESULTS"
+            fi
 
     ;;
 
     -f | --filter)
         clear_screen
-        echo -en "\033[1;32mPOKEMON TYPE '$2'\033[0m\n";
         [ -z "$2" ] && { 
         echo -e "\033[1;31mError: Missing type filter\033[0m";
         echo -e "\033[1;32mPlease enter a Pokemon Type \033[0m";
         exit 1; }
         FILTER_TYPE=$(echo "$2" | tr '[:upper:]' '[:lower:]')
         HEADER=$(head -1 "$CSV_FILE")
-        echo -e "\033[1m$HEADER\033[0m"
-        awk -F, -v type="$FILTER_TYPE" '
+        output=$(awk -F, -v type="$FILTER_TYPE" '
+        BEGIN { found = 0 }
         NR == 1 { next }
         tolower($4) == type || tolower($5) == type {
+            found = 1
             gsub(/%/, "", $2)
             printf "%s,%.5f%%,%d,%s,%s,%d,%d,%d,%d,%d,%d\n", 
             $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
-        }' "$CSV_FILE" | sort -t, -k2,2nr
-        ;;
-
+        }
+        END {
+            if (found == 0) {
+                print "This pokemon type is not in the data, try searching again"
+            }
+        }' "$CSV_FILE" | sort -t, -k2,2nr)
+        if [ "$output" = "This pokemon type is not in the data, try searching again" ]; then
+            echo -e "\033[1;31m$output\033[0m"
+        else
+            echo -en "\033[1;32mPOKEMON TYPE '$2'\033[0m\n";
+            echo -e "\033[1m$HEADER\033[0m"
+            echo "$output"
+        fi
+    ;;
     -h |--help)
         pokemon_header
         show_help
         ;;
-        
     *)
         echo -e "\033[1;31mError: Invalid command '$1'\033[0m"
         echo -e "\033[1;32mUse -h or --help for more information\033[0m"
