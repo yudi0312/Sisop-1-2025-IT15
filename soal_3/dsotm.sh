@@ -130,7 +130,9 @@ if [[ $1 == "--play="* ]]; then
         "Brain Damage") brain_damage ;;
         *) 
             echo -e "\033[1;31mInvalid track!\033[0m"
+            echo -e "\033[1;32mUse : ./dsotm.sh --play="[TRACK]"\033[0m"
             echo -e "Available tracks: Speak to Me, On the Run, Time, Money, Brain Damage"
+            echo -e "\033[1;31mPLZ!!!! MATCH THE COMMAND TRACK FORMAT\033[0m"
             exit 1
             ;;
     esac
