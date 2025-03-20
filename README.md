@@ -285,6 +285,10 @@ on_the_run() {
 
 Fungsi `on_the_run` menampilkan progres bar dinamis pada terminal. `tput cols` digunakan untuk memperoleh lebar terminal, lalu progres loading bar ditampilakn dengan karakter `▓`. Setiap iterasi dalam loop, panjang progress bar dihitung berdasarkan persentase kemajuan, kemudian diisi dengan simbol menggunakan `printf` dan `sed`. Tampilan diperbarui secara real-time dengan `echo -ne`, diikuti oleh persentase progres. Iterasi yang saya gunakan berlangsung dengan peningkatan 2% setiap detik hingga mencapai 100%. 
 
+screenshot : 
+
+![Image](https://github.com/user-attachments/assets/be6c5e8d-1e2c-4d5f-bffb-d91d939b2e5a)
+
 #### Track `time_clock`
 
 ```bash
@@ -306,6 +310,10 @@ time_clock() {
 
 Fungsi `time_clock` menampilkan hari dan jam di terminal dengan update setiap detik. Terdapat looping tak terbatas, terminal dibersihkan setiap looping menggunakan `clear_screen`. Fungsi `date +"%Y-%m-%d | %H:%M:%S"` digunakan untuk mendapatkan tanggal dan waktu saat ini. Setelah mencetak semuanya, program akan melakukan pembaruan setiap detik menggunakan `sleep 1`. 
 
+screenshot : 
+
+![Image](https://github.com/user-attachments/assets/a81efd80-8e81-4c45-86ca-42dcff7b331f)
+
 #### Track `money_matrix`
 
 ```bash
@@ -324,6 +332,10 @@ money_matrix() {
 ```
 
 Fungsi `money_matrix` menampilkan program seperti cmatrix, tetapi menggunakan simbol mata uang, seperti `$`, `€`, `£`, `¥`, `₿`, `₹`, `₣`, `¢`,dan `₩`. Lebar terminal diperoleh menggunakan `tput cols`. Setiap iterasi, simbol akan diacak secara random dan ditampilkan secara horizontal dan vertikal. Dengan menggunakan `sleep 0,1`, tampilan diperbarui setiap 0,1 detik. 
+
+screenshot : 
+
+![Image](https://github.com/user-attachments/assets/19d568ed-0231-4d37-bef8-6c6f766b1e7d)
 
 #### Track `brain_damage`
 
@@ -367,6 +379,11 @@ brain_damage() {
 
 Fungsi `brain_damage` menampilkan informasi sistem secara real-time, mirip dengan perintah top, dengan tampilan yang diperbarui setiap detik. Terminal dibersihkan dengan `clear_screen`. Fungsi ini menampilkan jumlah total proses, jumlah proses yang sedang berjalan (`R`), serta yang dalam keadaan tidur (`S`). Informasi penggunaan CPU diekstrak dari perintah `top -bn1`, lalu diformat dengan `awk` untuk menampilkan persentase penggunaan dalam berbagai kategori (user, system, idle, dsb.). Penggunaan memori (RAM dan swap) diperoleh melalui `free -m`, lalu diformat agar lebih mudah dibaca. Selanjutnya, daftar 10 proses dengan penggunaan CPU tertinggi ditampilkan menggunakan `ps -eo` dan diformat dengan `awk`, mencantumkan detail seperti PID, user, prioritas, penggunaan memori, dan CPU. Fungsi ini berjalan dalam loop tak terbatas dengan `sleep 1`, sehingga data diperbarui setiap detik.
 
+screenshot : 
+
+![Image](https://github.com/user-attachments/assets/1647bdb6-2245-4e08-a4d4-c0c0f0609595)
+
+
 Setelah semua fungsi berjalan, program akan melakukan parsing sesuai dengan argument yang sesuai dan tidak sesuai : 
 
 ```bash
@@ -403,7 +420,6 @@ fi
 
 Kendala tidak ada. 
 
-screenshot : 
 
 ## Soal 4 - Pokemon Analysis
 > Soal ini terdapat revisi di bagian `--grep`
@@ -700,6 +716,11 @@ esac
 
 Opsi `-i | --info` digunakan untuk menampilkan nama Pokemon dengan Usage% dan RawUsage paling tinggi. Script ini menggunakan `awk` untuk membaca dan memproses data dalam format CSV, di mana setiap kolom dipisahkan oleh koma (-F,). Baris pertama dilewati karena berisi header. Kemudian, skrip mencari Pokemon dengan Usage% tertinggi dan Raw Usage tertinggi dengan membandingkan setiap nilai di kolom kedua dan ketiga. Setelah menemukan nilai tertinggi, informasi ini ditampilkan dengan fungsi `printf`. Output yang dihasilkan menampilkan Pokemon dengan persentase Usage tertinggi serta Pokemon dengan RawUsage tertinggi. 
 
+screenshot : 
+
+![Image](https://github.com/user-attachments/assets/4d1b274c-d56f-41a5-8bf3-9404f455398c)
+
+
 #### Mengurutkan Pokemon berdasarkan data kolom
 
 ```bash
@@ -763,6 +784,10 @@ Opsi `-i | --info` digunakan untuk menampilkan nama Pokemon dengan Usage% dan Ra
 
 Opsi `-s | --sort` digunakan untuk mengurutkan dataset **pokemon_usage.csv** berdasarkan kriteria tertentu. Script ini mendukung pengurutan berdasarkan **Nama, Usage%, RawUsage, HP, Atk, Def, Sp.Atk, Sp.def, dan Speed**. Proses pengurutan dilakukan menggunakan `awk` dan `sort`, di mana data numerik diurutkan secara descending (dari nilai terbesar ke terkecil), sementara pengurutan berdasarkan nama dilakukan secara alfabetis. 
 
+screenshot : 
+
+![Image](https://github.com/user-attachments/assets/68dee528-bdb4-43b6-a381-c8fa781e13b7)
+
 #### Mencari nama Pokemon tertentu
 
 ```bash
@@ -799,6 +824,10 @@ Opsi `-s | --sort` digunakan untuk mengurutkan dataset **pokemon_usage.csv** ber
 ```
 
 Opsi `-g | --grep` digunakan untuk mencari nama Pokemon dari dataset pokemon_usage.csv. Skrip ini mengkonversi input nama Pokemon ke lowercase, supaya pencarian tidak bersifat case-sensitive. Kemudian, dengan menggunakan `awk`, skrip memeriksa apakah nama Pokemon dalam dataset cocok dengan kata pencarian yang diberikan. Jika ditemukan hasil yang sesuai, skrip akan menampilkan data Pokemon tersebut dengan format yang sudah diformat ulang, termasuk persentase penggunaan yang ditampilkan hingga lima desimal. Jika tidak ada hasil yang cocok, pesan kesalahan akan ditampilkan.
+
+screenshot :
+
+![Image](https://github.com/user-attachments/assets/75defb08-5190-4fde-b530-c169d7673088)
 
 #### Mencari Pokemon berdasarkan filter nama type
 
@@ -837,9 +866,18 @@ Opsi `-g | --grep` digunakan untuk mencari nama Pokemon dari dataset pokemon_usa
 
 Opsi `-f | --filter` digunakan untuk menyaring Pokemon berdasarkan tipe dalam dataset pokemon_usage.csv. Script mengubah input ke huruf kecil untuk memastikan pencocokan tidak case-sensitive. Dengan menggunakan awk, skrip memeriksa apakah tipe utama (Type1) atau tipe sekunder (Type2) dari setiap Pokemon sesuai dengan tipe yang diminta. Jika ada hasil yang cocok, data Pokemon akan ditampilkan dalam urutan berdasarkan Usage% secara menurun. Jika tidak ditemukan Pokemon dengan tipe tersebut, pesan kesalahan akan ditampilkan. 
 
+screenshot : 
+
+![Image](https://github.com/user-attachments/assets/e082214a-0e27-42ee-95fd-50dcb523abf1)
+
 #### Eror Handling 
 
 Dilihat dari script dari kami, sudah terdapat eror handling di setiap argumentnya. 
+
+screenshot : 
+
+![Image](https://github.com/user-attachments/assets/d9a6f407-0cf3-4ff9-80d9-290149a7107c)
+
 
 #### Help screen yang menarik
 
@@ -896,8 +934,13 @@ show_help() {
 
 Opsi `-h | --help` berfungsi sebagai panduan penggunaan script `pokemon_analysis.sh` ini. Fungsi `show_help` kemudian mendefinisikan panduan penggunaan skrip, mencantumkan berbagai opsi seperti --info untuk melihat Pokemon dengan penggunaan tertinggi, --sort untuk mengurutkan berdasarkan berbagai atribut (seperti serangan atau kecepatan), --grep untuk mencari Pokemon berdasarkan nama, dan --filter untuk menyaring Pokemon berdasarkan tipe. Jika dari pengguna melakukan kesalahan argument, akan memunculkan `show_header` dan `show_help` sebagai panduan agar argument tersebut benar. `show_header` menggunakan ASCII ART dengan tulisan Pokemon yang menarik pengguna untuk memakai program ini. 
 
-Kendala : Terdapat kendala pada bagian `-g | --grep`, dimana seharusnya jika pengguna memanggil argument `-g | --grep` dengan tipe nama yang lebih dari satu di dalam file pokemon_usage.csv tersebut, akan memberikan output semua nama Pokemon dengan nama yang dicari oleh pengguna. Akan tetapi, program saya hanya dapat mengambil satu nama Pokemon saja. Hal tersebut sudah saya revisi dan commit ulang. 
 
 screenshot : 
+
+![Image](https://github.com/user-attachments/assets/d2d90744-9ccb-4cff-9055-f29d6cca8169)
+
+
+Kendala : Terdapat kendala pada bagian `-g | --grep`, dimana seharusnya jika pengguna memanggil argument `-g | --grep` dengan tipe nama yang lebih dari satu di dalam file pokemon_usage.csv tersebut, akan memberikan output semua nama Pokemon dengan nama yang dicari oleh pengguna. Akan tetapi, program saya hanya dapat mengambil satu nama Pokemon saja. Hal tersebut sudah saya revisi dan commit ulang. 
+
 
 
