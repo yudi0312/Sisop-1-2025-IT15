@@ -76,7 +76,6 @@ case "$1" in
         }
         NR == 1 { next }
         {
-            gsub(/%/, "", $2)
             current_usage = $2 + 0
             current_raw = $3 + 0
             
@@ -163,26 +162,27 @@ case "$1" in
         clear_screen
         [ -z "$2" ] && { 
             echo -e "\033[1;31mError: Missing search term\033[0m";
-            echo -e "\033[1;32mPlease enter a search term \033[0m";
-            exit 1; }
+            echo -e "\033[1;32mPlease enter a search term\033[0m";
+            exit 1; 
+        }
 
         shift
         SEARCH_TERM=$(echo "$*" | tr '[:upper:]' '[:lower:]' | xargs)
         HEADER=$(head -1 "$CSV_FILE")
-        
+
         RESULTS=$(awk -F, -v term="$SEARCH_TERM" '
         NR == 1 { next }
-        tolower($1) == term {
+        tolower($1) ~ term {
             gsub(/%/, "", $2)
             printf "%s,%.5f%%,%d,%s,%s,%d,%d,%d,%d,%d,%d\n", 
             $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
         }' "$CSV_FILE")
-        
+
         if [ -z "$RESULTS" ]; then
-            echo -e "\033[1;31mError: No entries found for name '$SEARCH_TERM'\033[0m"
+            echo -e "\033[1;31mError: No entries found for name containing '$SEARCH_TERM'\033[0m"
             exit 1
         else
-            echo -en "\033[1;32mFound exact match for Pokemon: '$SEARCH_TERM' \033[0m\n"
+            echo -en "\033[1;32mFound match(es) for Pokemon: '$SEARCH_TERM'\033[0m\n"
             echo -e "\033[1m$HEADER\033[0m"
             echo "$RESULTS"
         fi
