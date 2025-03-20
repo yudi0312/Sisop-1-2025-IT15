@@ -436,7 +436,7 @@ screenshot tampilan dari crontab manager:
 screenshot struktur akhir:
 
 ![image](https://github.com/user-attachments/assets/bdf33da1-3599-48b8-9957-24541235e755)
-## Soal 3 : The Dark Side of The Moon (DSOTM) - Bash Script
+## Soal 3 : The Dark Side of The Moon (DSOTM)
 >Soal ini tidak terdapat revisi
 
 Author : Putu Yudi Nandanjaya Wiraguna (5027241080)
