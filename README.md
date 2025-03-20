@@ -49,22 +49,40 @@ else
     exit 1
 fi
 ```
-## Soal 2 (tidak revisi)
-2\. a)
+## Soal 2 - Seorang Observer
+>Soal ini tidak terdapat revisi
 
+Author : Naruna Vicranthyo Putra Gangga (5027241105)
+
+### Deskripsi
+
+Author diberikan peran sebagai seorang "Observer" untuk membuat 9 hal, seperti berikut ini : 
+- “First Step in a New World”
+- “Radiant Genesis”
+- “Unceasing Spirit”
+- “The Eternal Realm of Light”
+- “The Brutality of Glass”
+- “In Grief and Great Delight”
+- “On Fate's Approach”
+- “The Disfigured Flow of Time”
+- “Irruption of New Color”
+
+
+#### First Step in a New World
 
 ![Screenshot 2025-03-19 233226](https://github.com/user-attachments/assets/bbc3a0ac-c72b-4c56-9611-9c9e3b141b25)
 
 disini diminta untuk membuat login.sh dan register.sh dengan masing-masing parameter harus memiliki email dan password (dan username untuk register.sh). database yang menyimpan data dari kedua script itu disimpan di data/player.csv
 
-b)
+#### Radiant Genesis
+
 ```
 if [[ ! "$email" =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$ ]]; then
         echo "Email tidak valid! Pastikan format email benar (contoh: user@example.com)."
 ```
 pada kedua script ditambahkan constraint agar format yang dimasukkan benar, yaitu email harus memiliki tanda @ dan titik, sementara password harus memiliki minimal 8 karakter, setidaknya satu huruf kecil, satu huruf besar, dan satu angka.
 
-c) 
+#### Unceasing Spirit
 ```
 if [[ ! "$email" =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$ ]]; then
         echo "Email tidak valid! Pastikan format email benar (contoh: user@example.com)."
@@ -76,14 +94,15 @@ if [[ ! "$email" =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$ ]]; then
 ```
 lalu ditambahkan lagi satu contraint agar tidak ada duplikasi email.
 
-d) 
+#### The Eternal Realm of Light
+
 ```
 hashed_password=$(echo -n "$password$SALT" | sha256sum | awk '{print $1}')
 echo "$email,$username,$hashed_password" >> data/player.csv
 ```
 dan untuk menjaga keamanan password, ditambahkan algoritma hashing sha256sum agar terhindar dari brute force attacks. 
 Berikut adalah tampilan dari script register.sh dan login.sh jika sudah ditambahkan constraint-constraint tersebut:
-### register.sh
+##### register.sh
 ```
 #!/bin/bash
 
@@ -138,7 +157,7 @@ echo "Pendaftaran berhasil! Akun telah dibuat."
 sleep 1
 
 ```
-### login.sh
+##### login.sh
 ```
 #!/bin/bash
 
@@ -174,8 +193,10 @@ echo "Login berhasil!"
 
 ```
 
-e) selanjutnya, bikin shell script yang dapat memantau penggunaan CPU (dalam persentase) dan model dari CPU tersebut.
-### core_monitor.sh
+#### The Brutality of Glass
+
+selanjutnya, bikin shell script yang dapat memantau penggunaan CPU (dalam persentase) dan model dari CPU tersebut.
+##### core_monitor.sh
 ```
 #!/bin/bash
 
@@ -205,8 +226,10 @@ sleep 1
 
 ```
 
-f) bikin satu lagi shell script untuk memantau RAM (dalam persentase) dan juga penggunaan RAM.
-### frag_monitor.sh
+#### In Grief and Great Delight
+
+bikin satu lagi shell script untuk memantau RAM (dalam persentase) dan juga penggunaan RAM.
+##### frag_monitor.sh
 ```
 #!/bin/bash
 
@@ -239,8 +262,10 @@ sleep 1
 
 ```
 
-g) agar memudahkan player mengatur jadwal pemantauan system, buat manager.sh untuk menu yang harus berisikan fungsionalitas membuat dan menghapus jadwal pemantauan CPU dan RAM, dan tambahkan opsi melihat jadwal yang sedang aktif saat ini
-### manager.sh
+#### On Fate's Approach
+
+agar memudahkan player mengatur jadwal pemantauan system, buat manager.sh untuk menu yang harus berisikan fungsionalitas membuat dan menghapus jadwal pemantauan CPU dan RAM, dan tambahkan opsi melihat jadwal yang sedang aktif saat ini
+##### manager.sh
 ```
 add_cron_job() {
     local script_path=$1
@@ -311,12 +336,16 @@ case $choice in
     *) echo "Invalid choice. Please try again."; sleep 1 ;;
 esac
 ```
-h) dikarenakan script core_monitor.sh dan frag_monitor.sh tidak mengeluarkan output pada terminal, maka buat 2 log file, core.log dan fragment.log pada folder logs, agar output dari kedua script bisa terlihat.
+#### The Disfigured Flow of Time
+
+dikarenakan script core_monitor.sh dan frag_monitor.sh tidak mengeluarkan output pada terminal, maka buat 2 log file, core.log dan fragment.log pada folder logs, agar output dari kedua script bisa terlihat.
 
 ![Screenshot 2025-03-20 002935](https://github.com/user-attachments/assets/9c164bda-ab09-49e4-8cc0-25470475510f)
 ![Screenshot 2025-03-20 002957](https://github.com/user-attachments/assets/28f234a7-f546-4dff-ab49-97bd52d9779e)
 
-i) agar player bisa memiliki akses dari seluruh system, buat shell script terminal.sh agar system memiliki antarmuka utama yang menggabungkan semua komponen.
+#### Irruption of New Color
+
+agar player bisa memiliki akses dari seluruh system, buat shell script terminal.sh agar system memiliki antarmuka utama yang menggabungkan semua komponen.
 
 ```
 #!/bin/bash
