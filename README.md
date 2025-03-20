@@ -5,7 +5,16 @@ Anggota kelompok :
 - Naruna Vicranthyo Putra Gangga	5027241105
 - Az Zahrra Tasya Adelia	        5027241087
 
-## Soal 1 (tidak revisi)
+## Soal 1 - Poppo dan Siroyo
+>Soal ini tidak ada revisi
+
+Author : Az Zahrra Tasya Adelia (5027241087)
+
+### Deskripsi
+
+Author diberikan tugas membuat sebuah script untuk Poppo dan Siroyo dalam menganalisis sebuah table ajaib yang berisi catatan misterius bernama [reading_data.csv](https://drive.google.com/file/d/1l8fsj5LZLwXBlHaqhfJVjz_T0p7EJjqV/view).
+
+### ./poppo_siroyo.sh
 
 ```bash
 #!/bin/bash
@@ -49,6 +58,80 @@ else
     exit 1
 fi
 ```
+
+#### Buku yang telah dibaca oleh Chris Hemsworth
+
+```bash
+if [ "$1" = "soalA" ]; then
+    clear_screen
+    count=$(awk -F, 'tolower($2) == "chris hemsworth" {count++} END {print count}' "$FILE")
+    echo "Chris Hemsworth membaca $count buku."
+```
+
+Menyimpan hasil perhitungan dari `awk` ke dalam variabel `count`. mencocokkan dengan nama ‘Chris Hemsworth’ dengan mengabaikan huruf kecil/besar. sistem akan menghitung berapa banyak baris dalam CSV yang menunjukkan buku yang dibaca oleh "Chris Hemsworth". sesuai dengan soal, di mana kita harus mengetahui jumlah buku yang dia baca.
+
+screenshot : 
+
+![Image](https://github.com/user-attachments/assets/6f4d0be0-9e26-4c6a-b081-2620fa725cd0)
+
+#### Rata - rata durasi membaca dengan menggunakan Tablet
+
+```bash
+elif [ "$1" = "soalB" ]; then
+    clear_screen
+    Reading_Duration_Minutes=$(awk -F, '$8 == "Tablet" {sum+=$6; count++} END {if (count>0) print sum/count; else print 0}' "$FILE")
+    echo "Rata-rata durasi membaca dengan Tablet adalah $Reading_Duration_Minutes menit."
+```
+
+Memeriksa apakah kolom ke-8 berisi kata "Tablet". (Catatan: Penentuan kolom harus sesuai dengan struktur CSV. Di akhir, jika count lebih dari 0, mencetak rata-rata (jumlah dibagi `count`); jika tidak, mencetak 0. guna mengetahui rata-rata durasi membaca (Reading_Duration_Minutes) utk buku yg dibaca menggunakan “Tablet”. 
+
+screenshot :
+
+![Image](https://github.com/user-attachments/assets/a2432400-882a-4b28-81d4-fd0db7ad8bad)
+
+#### Pembaca dengan rating tertinggi 
+
+```bash
+elif [ "$1" = "soalC" ]; then
+    clear_screen
+    highest_rating=$(awk -F, 'NR>1 {if ($7 > max) {max=$7; name=$2; book=$3}} END {print name " - " book " - " max}' "$FILE")
+    echo "Pembaca dengan rating tertinggi: $highest_rating"
+
+```
+Poppo ingin mengetahui siapa yang memberikan rating tertinggi untuk buku yang dibaca, beserta nama (Name) dan judul bukunya (Book_Title). Memeriksa apakah nilai di kolom ke-7 (rating) lebih tinggi dr nilai maksimum yg ditemukan sebelumnya. Setelah pemrosesan, mencetak pembaca, buku, dan rating tertinggi dalam format yg diminta. 
+
+screenshot : 
+
+![Image](https://github.com/user-attachments/assets/fa1dfb27-d041-46b7-9b79-9862a0044e97)
+
+#### Genre paling populer di Asia setelah 2023 
+
+```bash
+elif [ "$1" = "soalD" ]; then 
+    clear_screen
+    result=$(awk -F, '
+    $9 == "Asia" && $5 > "2023-12-31" {
+        count[$4]++} END {
+        max=0; genre="";
+        for (g in count) {
+            if (count[g] > max) {
+                max=count[g]; genre=g
+            }
+        }
+        printf "Genre paling populer di Asia setelah 2023 adalah %s dengan %d buku.\n", genre, max
+    }' "$FILE")
+    echo "$result"
+```
+
+Siroyo harus membuat laporan untuk klub buku yang fokus pada teman-teman di Asia, yaitu menemukan genre yang paling sering dibaca di Asia setelah 31 Desember 2023, beserta jumlah buku. Memeriksa baris di mana kolom ke-9 sama dgn "Asia" (mewakili wilayah). Setelah memproses semua baris, inisialisasi variabel `max` dan `genre`, Melakukan perulangan pd array `count` utk mencari genre dgn nilai tertinggi.
+
+screenshot : 
+
+![Image](https://github.com/user-attachments/assets/51d1f6a9-bbbc-4986-ad62-d7e61f715e14) 
+
+Kendala : tidak ada 
+
+
 ## Soal 2 - Seorang Observer
 >Soal ini tidak terdapat revisi
 
