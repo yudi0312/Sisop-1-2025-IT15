@@ -264,6 +264,7 @@ speak_to_me() {
 Fungsi `speak_to_me` menampilkan kata afirmasi dengan mengambil data dari API [affirmation](https://github.com/annthurium/affirmations). Setiap detik, fungsi ini akan mengakses API menggunakan `curl`, mengekstraknya menggunakan `awk`, dan menambahkan ke dalam array `history`. 
 
 screenshot : 
+
 ![Image](https://github.com/user-attachments/assets/68c73ce7-afb4-4779-9438-490ff67e025e)
 
 #### Track `on_the_run`
